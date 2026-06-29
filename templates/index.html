@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Email Agent</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0d0d;
+  --surface: #151515;
+
+  --surface2: #1c1c1c;
+  --border: #2a2a2a;
+  --border-active: #404040;
+  --accent: #e8ff47;
+  --accent-dim: rgba(232,255,71,0.12);
+  --accent-dim2: rgba(232,255,71,0.06);
+  --text: #f0f0f0;
+  --text-muted: #888;
+  --text-dim: #555;
+  --success: #4ade80;
+  --success-bg: rgba(74,222,128,0.08);
+  --error: #f87171;
+  --error-bg: rgba(248,113,113,0.08);
+  --info: #60a5fa;
+  --info-bg: rgba(96,165,250,0.08);
+  --radius: 6px;
+  --radius-lg: 10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; font-size: 15px; line-height: 1.6; }
+body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 4rem; }
+
+.header { text-align: center; margin-bottom: 3rem; }
+.header-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-dim2); border: 0.5px solid var(--border); color: var(--text-muted); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; margin-bottom: 1.25rem; font-family: 'JetBrains Mono', monospace; }
+.header-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; animation: pulse 2s infinite; }
+h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; margin-bottom: .5rem; }
+h1 em { color: var(--accent); font-style: normal; }
+.header-sub { font-size: 13px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+.container { width: 100%; max-width: 700px; display: flex; flex-direction: column; gap: 1px; }
+
+.panel { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.panel-header { display: flex; align-items: center; gap: 10px; padding: .9rem 1.25rem; border-bottom: 0.5px solid var(--border); }
+.step-num { width: 22px; height: 22px; border-radius: 50%; background: var(--surface2); border: 0.5px solid var(--border-active); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; flex-shrink: 0; transition: all .3s; }
+.step-num.done { background: var(--accent); color: #000; border-color: var(--accent); }
+.step-num.active { border-color: var(--accent); color: var(--accent); }
+.panel-title { font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); }
+.panel-body { padding: 1.25rem; }
+
+.drop-zone { border: 1.5px dashed var(--border); border-radius: var(--radius); padding: 2.5rem 1rem; text-align: center; cursor: pointer; transition: all .2s; background: var(--surface2); position: relative; }
+.drop-zone:hover, .drop-zone.over { border-color: var(--accent); background: var(--accent-dim2); }
+.drop-zone.has-file { border-color: var(--success); border-style: solid; background: var(--success-bg); }
+.drop-zone-icon { font-size: 2rem; margin-bottom: .5rem; }
+.drop-zone-title { font-size: 14px; font-weight: 600; margin-bottom: .25rem; }
+.drop-zone-sub { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+input[type=file] { display: none; }
+
+.email-result { display: none; margin-top: 1rem; background: var(--info-bg); border: 0.5px solid var(--info); border-radius: var(--radius); padding: .75rem 1rem; display: flex; align-items: center; gap: 10px; }
+.email-result.hidden { display: none !important; }
+.email-result-label { font-size: 11px; color: var(--info); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: .08em; flex-shrink: 0; }
+.email-result-value { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text); flex: 1; word-break: break-all; }
+
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.field-grid.full { grid-template-columns: 1fr; }
+.field-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; font-family: 'JetBrains Mono', monospace; }
+input[type=text], input[type=email], input[type=number], input[type=password], textarea, select {
+  width: 100%; background: var(--surface2); border: 0.5px solid var(--border); border-radius: var(--radius);
+  color: var(--text); font-family: 'Syne', sans-serif; font-size: 13px; padding: 9px 12px;
+  outline: none; transition: border-color .15s; appearance: none;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+input[type=password] { font-family: 'JetBrains Mono', monospace; letter-spacing: .06em; }
+
+.attach-row { display: flex; gap: 8px; align-items: center; }
+.attach-btn { flex-shrink: 0; background: var(--surface2); border: 0.5px solid var(--border); border-radius: var(--radius); color: var(--text-muted); font-size: 12px; font-family: 'JetBrains Mono', monospace; padding: 8px 14px; cursor: pointer; transition: all .15s; white-space: nowrap; }
+.attach-btn:hover { border-color: var(--accent); color: var(--accent); }
+.attach-btn.attached { border-color: var(--success); color: var(--success); }
+.attach-filename { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+
+.divider { height: 0.5px; background: var(--border); margin: 1rem 0; }
+
+.log-panel { background: var(--surface2); border: 0.5px solid var(--border); border-radius: var(--radius); font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: .75rem 1rem; max-height: 160px; overflow-y: auto; margin-bottom: 1rem; display: none; }
+.log-panel.visible { display: block; }
+.log-line { padding: 1px 0; line-height: 1.7; }
+.log-line.ok { color: var(--success); }
+.log-line.err { color: var(--error); }
+.log-line.info { color: var(--info); }
+.log-line.muted { color: var(--text-dim); }
+
+.send-btn { width: 100%; padding: 1rem; background: var(--accent); color: #000; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; border: none; border-radius: var(--radius); cursor: pointer; transition: all .2s; }
+.send-btn:hover:not(:disabled) { background: #f5ff7a; transform: translateY(-1px); }
+.send-btn:disabled { opacity: .3; cursor: not-allowed; transform: none; }
+.send-btn.loading { background: var(--surface2); color: var(--text-muted); border: 0.5px solid var(--border); }
+
+.toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(4px); background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: .75rem 1.25rem; font-size: 13px; font-family: 'JetBrains Mono', monospace; opacity: 0; transition: all .3s; pointer-events: none; white-space: nowrap; z-index: 100; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.success { border-color: var(--success); color: var(--success); background: var(--success-bg); }
+.toast.error { border-color: var(--error); color: var(--error); background: var(--error-bg); }
+
+.config-hint { font-size: 11px; color: var(--text-dim); margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+
+.progress-bar { height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; margin-bottom: 1.25rem; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 1px; width: 0%; transition: width .4s ease; }
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+@keyframes spin { to{transform:rotate(360deg)} }
+.spinning { animation: spin .8s linear infinite; display: inline-block; }
+</style>
+</head>
+<body>
+<a href="/logout" style="position:fixed;top:1rem;right:1rem;z-index:999;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted);text-decoration:none;border:0.5px solid var(--border);padding:5px 14px;border-radius:20px;transition:color .15s,border-color .15s" onmouseover="this.style.color='#f87171';this.style.borderColor='rgba(248,113,113,.45)'" onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='var(--border)'">Logout</a>
+
+<div class="header">
+  <div class="header-badge"><span></span> PRICEEASY AI</div>
+  <h1>Resume <em>Email</em> Agent</h1>
+  <p class="header-sub"></p>
+</div>
+
+<div class="container">
+
+  <!-- Step 1: Upload Resume -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="step-num active" id="sn1">1</div>
+      <span class="panel-title">Upload Resume</span>
+    </div>
+    <div class="panel-body">
+      <div class="drop-zone" id="dropZone" onclick="document.getElementById('resumeInput').click()">
+        <div class="drop-zone-icon" id="dzIcon">📄</div>
+        <div class="drop-zone-title" id="dzTitle">Drop PDF or DOCX here</div>
+        <div class="drop-zone-sub" id="dzSub">click to browse · pdf, docx supported</div>
+      </div>
+      <input type="file" id="resumeInput" accept=".pdf,.docx">
+      <div class="email-result hidden" id="emailResult">
+        <span class="email-result-label">✓ found</span>
+        <span class="email-result-value" id="emailValue">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Attachments -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="step-num" id="sn2">2</div>
+      <span class="panel-title">Attachments</span>
+    </div>
+    <div class="panel-body">
+      <div style="margin-bottom:12px">
+        <div class="field-label">Role</div>
+        <select id="role" style="width:100%;padding:9px 12px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface2);color:var(--text);margin-bottom:8px">
+          <option value="">Loading roles...</option>
+        </select>
+      </div>
+      <div class="field-grid full" style="margin-bottom:12px">
+        <div>
+          <div class="field-label">Upload Link </div>
+          <input type="text" id="jdLink" placeholder="https://example.com/link" readonly />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Email Content -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="step-num" id="sn3">3</div>
+      <span class="panel-title">Email Content</span>
+    </div>
+    <div class="panel-body">
+      <div class="field-grid full" style="margin-bottom:12px">
+        <div>
+          <div class="field-label">Subject Line</div>
+          <input type="text" id="subject" value="Internship Opportunity – Case Study Submission">
+        </div>
+      </div>
+      <div class="field-grid full">
+        <div>
+          <div class="field-label">Email Body</div>
+          <textarea id="body" rows="6">
+
+</textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4: Gmail API Config -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="step-num" id="sn4">4</div>
+      <span class="panel-title">Gmail API Config</span>
+    </div>
+    <div class="panel-body">
+      <div class="field-grid">
+        <div>
+          <div class="field-label">Your Gmail Address</div>
+          <input type="email" id="senderEmail" placeholder="you@gmail.com" readonly style="opacity:.8">
+        </div>
+        <div>
+          <div class="field-label">API Status</div>
+          <input type="text" id="apiStatus" placeholder="Checking..." readonly style="opacity:.6">
+          <div class="config-hint">Credentials are loaded from server env: <code>SENDER_EMAIL</code>, <code>GOOGLE_CLIENT_ID</code>, <code>GOOGLE_CLIENT_SECRET</code>, <code>GOOGLE_REFRESH_TOKEN</code>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 5: Send -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="step-num" id="sn5">5</div>
+      <span class="panel-title">Send</span>
+    </div>
+    <div class="panel-body">
+      <div class="progress-bar" id="progressBar" style="display:none">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="log-panel" id="logPanel"></div>
+      <button class="send-btn" id="sendBtn" disabled onclick="runAgent()">
+        ↗ Extract Email &amp; Send
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const state = {
+  resumeFile: null,
+  jdLink: '',
+  extractedEmail: null,
+  sending: false
+};
+
+const logs = [];
+
+function log(msg, cls = 'muted') {
+  const ts = new Date().toLocaleTimeString('en', {hour12:false});
+  logs.push(`<div class="log-line ${cls}">[${ts}] ${msg}</div>`);
+  const panel = document.getElementById('logPanel');
+  panel.classList.add('visible');
+  panel.innerHTML = logs.join('');
+  panel.scrollTop = panel.scrollHeight;
+}
+
+function setStepDone(n) {
+  const el = document.getElementById('sn' + n);
+  el.classList.remove('active');
+  el.classList.add('done');
+  el.textContent = '✓';
+}
+function setStepActive(n) {
+  const el = document.getElementById('sn' + n);
+  el.classList.add('active');
+}
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+// environment-driven readiness: we fetch minimal env info from server
+let envCredentialsReady = false;
+async function fetchEnv() {
+  try {
+    const r = await fetch('/env');
+    const j = await r.json();
+    if (j.sender_email) document.getElementById('senderEmail').value = j.sender_email;
+    envCredentialsReady = !!j.credentials_ready;
+    document.getElementById('apiStatus').value = envCredentialsReady ? 'Gmail API configured' : 'Gmail API not configured';
+  } catch (e) {
+    console.warn('Could not fetch env', e);
+    envCredentialsReady = false;
+  }
+  checkSendReady();
+}
+
+function checkSendReady() {
+  const ready = state.extractedEmail && envCredentialsReady && document.getElementById('senderEmail').value;
+  document.getElementById('sendBtn').disabled = !ready;
+}
+
+
+
+let managedSettings = {roles: [], panels: []};
+
+function getManagedRole(){
+  const selectedId = document.getElementById('role').value;
+  return managedSettings.roles.find(role => role.id === selectedId) || null;
+}
+
+function applyManagedRole(){
+  const role = getManagedRole();
+  const link = role ? (role.upload_link || '') : '';
+  document.getElementById('jdLink').value = link;
+  state.jdLink = link;
+  if(role){
+    document.getElementById('subject').value = role.email_subject || '';
+    document.getElementById('body').value = role.email_body || '';
+  }
+}
+
+async function loadManagedSettings(){
+  try{
+    const res = await fetch('/api/settings');
+    managedSettings = await res.json();
+    const roleSelect = document.getElementById('role');
+    roleSelect.innerHTML = '';
+    if(!managedSettings.roles.length){
+      roleSelect.innerHTML = '<option value="">No roles added</option>';
+      return;
+    }
+    managedSettings.roles.forEach(role => {
+      const opt = document.createElement('option');
+      opt.value = role.id;
+      opt.textContent = role.name;
+      roleSelect.appendChild(opt);
+    });
+    applyManagedRole();
+  }catch(e){
+    console.warn('Could not load managed roles', e);
+  }
+}
+
+document.getElementById('role').addEventListener('change', applyManagedRole);
+window.addEventListener('DOMContentLoaded', function(){
+  loadManagedSettings();
+  fetchEnv();
+});
+// Protect jdLink from user edits (no backspace/delete/paste/cut)
+try{
+  const jdEl = document.getElementById('jdLink');
+  if(jdEl){
+    jdEl.addEventListener('keydown', function(ev){
+      if(ev.key === 'Backspace' || ev.key === 'Delete'){
+        ev.preventDefault();
+      }
+      // prevent Ctrl+V / Ctrl+X
+      if((ev.ctrlKey || ev.metaKey) && (ev.key === 'v' || ev.key === 'V' || ev.key === 'x' || ev.key === 'X')){
+        ev.preventDefault();
+      }
+    });
+    jdEl.addEventListener('paste', function(ev){ ev.preventDefault(); });
+    jdEl.addEventListener('cut', function(ev){ ev.preventDefault(); });
+    // guard against programmatic input events: keep value in sync with state
+    jdEl.addEventListener('input', function(ev){
+      if(state.jdLink) ev.target.value = state.jdLink;
+    });
+  }
+}catch(e){}
+
+// Resume upload
+document.getElementById('resumeInput').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  state.resumeFile = file;
+  state.extractedEmail = null;
+  document.getElementById('emailResult').classList.add('hidden');
+  document.getElementById('dzIcon').textContent = '⏳';
+  document.getElementById('dzTitle').textContent = 'Extracting email...';
+  document.getElementById('dzSub').textContent = file.name;
+  logs.length = 0;
+  log('Uploading resume: ' + file.name, 'info');
+
+  const fd = new FormData();
+  fd.append('resume', file);
+  try {
+    const res = await fetch('/extract-email', { method: 'POST', body: fd });
+    const data = await res.json();
+    if (data.success) {
+      state.extractedEmail = data.email;
+      document.getElementById('dzIcon').textContent = '✅';
+      document.getElementById('dzTitle').textContent = file.name;
+      document.getElementById('dzSub').textContent = 'email found successfully';
+      document.getElementById('dropZone').classList.add('has-file');
+      document.getElementById('emailResult').classList.remove('hidden');
+      document.getElementById('emailValue').textContent = data.email;
+      log('Email extracted: ' + data.email, 'ok');
+      setStepDone(1);
+      setStepActive(2);
+      checkSendReady();
+    } else {
+      document.getElementById('dzIcon').textContent = '❌';
+      document.getElementById('dzTitle').textContent = 'Extraction failed';
+      document.getElementById('dzSub').textContent = data.error;
+      log('Error: ' + data.error, 'err');
+      showToast('❌ ' + data.error, 'error');
+    }
+  } catch(err) {
+    log('Network error: ' + err.message, 'err');
+    showToast('❌ Network error', 'error');
+  }
+});
+
+// Drag & drop
+const dz = document.getElementById('dropZone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('over'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('over'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('over');
+  const f = e.dataTransfer.files[0];
+  if (f) {
+    const dt = new DataTransfer();
+    dt.items.add(f);
+    document.getElementById('resumeInput').files = dt.files;
+    document.getElementById('resumeInput').dispatchEvent(new Event('change'));
+  }
+});
+
+// JD/Assessment links (user-provided)
+document.getElementById('jdLink').addEventListener('input', e => { state.jdLink = e.target.value.trim(); });
+
+// credentials are read-only from server; no input wiring
+
+function setProgress(pct) {
+  document.getElementById('progressBar').style.display = 'block';
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+async function runAgent() {
+  if (state.sending) return;
+  state.sending = true;
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+  btn.textContent = '⏳ Sending...';
+  setProgress(30);
+
+  // Collect links (if provided) and append them to the email body
+  const links = [];
+  if (state.jdLink) links.push({ label: '', url: state.jdLink });
+
+  log('Connecting to Gmail API...', 'info');
+  setProgress(60);
+
+  try {
+    const res = await fetch('/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to_email: state.extractedEmail,
+        subject: document.getElementById('subject').value,
+        body: (function(){
+          let b = document.getElementById('body').value || '';
+          if(links.length){
+            b += '\n\nLinks:\n';
+            for(const L of links){ b += `- ${L.label}: ${L.url}\n`; }
+          }
+          return b;
+        })(),
+      })
+    });
+    const data = await res.json();
+    setProgress(100);
+    if (data.success) {
+      log('✓ Email sent to ' + state.extractedEmail, 'ok');
+      if (state.jdPath) log('✓ Attached: ' + state.jdName, 'ok');
+      if (state.assPath) log('✓ Attached: ' + state.assName, 'ok');
+      setStepDone(2); setStepDone(3); setStepDone(4); setStepDone(5);
+      btn.textContent = '✓ Email Sent!';
+      btn.style.background = '#4ade80';
+      showToast('✅ Email sent to ' + state.extractedEmail, 'success');
+    } else {
+      log('✗ ' + data.error, 'err');
+      showToast('❌ ' + data.error, 'error');
+      btn.classList.remove('loading');
+      btn.textContent = '↗ Extract Email & Send';
+      btn.disabled = false;
+    }
+  } catch(err) {
+    log('✗ Network error: ' + err.message, 'err');
+    showToast('❌ Network error', 'error');
+    btn.classList.remove('loading');
+    btn.textContent = '↗ Extract Email & Send';
+    btn.disabled = false;
+  }
+  state.sending = false;
+}
+</script>
+<a class="back" href="/main">← Back to Main</a>
+</body>
+</html>

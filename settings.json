@@ -1,0 +1,71 @@
+{
+  "roles": [
+    {
+      "id": "data-analyst",
+      "name": "Data Analyst",
+      "upload_link": "https://drive.google.com/drive/folders/1qhQ8YS_hA1ZPbxIG8DqMxHfrtx2WeEKk",
+      "email_subject": "data analyst",
+      "email_body": "dear candidate \n\ncomplete so and so",
+      "invite_subject": "data analyst interview",
+      "invite_body": "dear candidate\n\nplz be available for the interview"
+    },
+    {
+      "id": "data-analyst-piyush",
+      "name": "data analyst (piyush)",
+      "upload_link": "https://drive.google.com/drive/folders/1qhQ8YS_hA1ZPbxIG8DqMxHfrtx2WeEKk",
+      "email_subject": "case study and jd",
+      "email_body": "dear candidate\n\nif you are interested in joining our organization plz complete the  case study",
+      "invite_subject": "BA interview",
+      "invite_body": "plz be available for the interview"
+    },
+    {
+      "id": "data-analyst-shashank",
+      "name": "data analyst(shashank)",
+      "upload_link": "",
+      "email_subject": "rewrwe",
+      "email_body": "few",
+      "invite_subject": "sadfaesf",
+      "invite_body": "fefew"
+    },
+    {
+      "id": "ba",
+      "name": "BA",
+      "upload_link": "https://drive.google.com/drive/folders/1adqT4v0-L3A8FTMtUg2AbQCzRVpJ4Iy8",
+      "email_subject": "Internship Opportunity - Case Study Submission",
+      "email_body": "Dear Candidate,\n\nThank you for your interest in the Internship Opportunity with us.\n\nAs part of the selection process, please complete the attached case study and submit this within 3 business days.\n\nJD and Assignment has been attached in the drive link provided.\n\nThis is a great opportunity for you to showcase your analytical thinking, creativity and problem-solving approach. We encourage you to put forward your best work.\n\nFurther details regarding the process will be shared later.\n\nWe look forward to reviewing your submission and wish you all the very best!\n\nThank you,\n\nRegards\nHR Team",
+      "invite_subject": "Invitation: Business Analyst Internship Interview",
+      "invite_body": "Dear Candidate,\n\nThank you for your interest in the Business Analyst Internship opportunity with PriceEasy.\n\nWe are pleased to inform you that you have been shortlisted for the interview process.\n\nPlease find the interview details."
+    },
+    {
+      "id": "dev",
+      "name": "DEV",
+      "upload_link": "https://drive.google.com/drive/folders/1qhQ8YS_hA1ZPbxIG8DqMxHfrtx2WeEKk",
+      "email_subject": "Application: Senior Frontend Developer",
+      "email_body": "Dear Candidate,\n\nThank you for your interest in the Internship Opportunity with us.\n\nAs part of the selection process, please complete the attached case study and submit this within 3 business days.\n\nJD and Assignment has been attached in the drive link provided.\n\nThis is a great opportunity for you to showcase your analytical thinking, creativity and problem-solving approach. We encourage you to put forward your best work.\n\nFurther details regarding the process will be shared later.\n\nWe look forward to reviewing your submission and wish you all the very best!\n\nThank you,\n\nRegards\nHR Team",
+      "invite_subject": "Invitation: Software Developer Interview",
+      "invite_body": "Dear Candidate,\n\nThank you for your interest in software development with PriceEasy.\n\nWe are pleased to inform you that you have been shortlisted for the interview process.\n\nPlease find the interview details."
+    }
+  ],
+  "panels": [
+    {
+      "id": "adithya",
+      "name": "adithya",
+      "email": "adithyashettyq2@gmail.com"
+    },
+    {
+      "id": "sanjana",
+      "name": "sanjana",
+      "email": "sanjana.s1502@gmail.com"
+    },
+    {
+      "id": "deeksha",
+      "name": "deeksha",
+      "email": "deeksha.bhat309201@gmail.com"
+    },
+    {
+      "id": "prem",
+      "name": "Prem",
+      "email": "prem.ku1701@gmail.com"
+    }
+  ]
+}

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resume Agent — Interview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0d0d0d;--surface:#151515;--border:#2a2a2a;--accent:#60a5fa;--text:#f0f0f0;--muted:#888;--radius:10px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;display:flex;align-items:center;justify-content:center;padding:2rem}
+    .wrap{width:100%;max-width:800px}
+    header{text-align:center;margin-bottom:2rem}
+    h1{font-size:2rem}
+    .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+    .panel h2{margin-bottom:8px}
+    .panel p{color:var(--muted);margin-bottom:12px}
+    .actions{display:flex;gap:12px}
+    .btn{padding:10px 14px;background:var(--accent);color:#000;border-radius:8px;text-decoration:none;font-weight:700}
+    .back{display:block;margin-top:16px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace}
+    /* Highlight resume drop-zone on hover with a yellow dotted outline */
+    #resumeDropZone{ transition: box-shadow .12s ease, outline-color .12s ease, background .12s ease; }
+    #resumeDropZone:hover{ outline: 3px dotted #e8ff47; outline-offset: 6px; background: rgba(232,255,71,0.04); }
+  </style>
+</head>
+<body>
+  <a href="/logout" style="position:fixed;top:1rem;right:1rem;z-index:999;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:5px 14px;border-radius:20px;transition:color .15s,border-color .15s" onmouseover="this.style.color='#f87171';this.style.borderColor='rgba(248,113,113,.45)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Logout</a>
+  <div class="wrap">
+    <header>
+    </header>
+
+    <div class="panel">
+      <h2>Interview Actions</h2>
+      <p>Use these tools to schedule or manage interviews (not implemented).</p>
+      <div class="actions">
+        <!-- Schedule form -->
+        <div style="flex:1">
+          <div style="margin-bottom:8px;display:flex;gap:8px;align-items:center">
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <meta charset="utf-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <title>Resume Agent — Interview</title>
+              <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+              <style>
+                :root{--bg:#0d0d0d;--surface:#151515;--border:#2a2a2a;--accent:#60a5fa;--text:#f0f0f0;--muted:#888;--radius:10px}
+                *{box-sizing:border-box;margin:0;padding:0}
+                body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;display:flex;align-items:center;justify-content:center;padding:2rem}
+                .wrap{width:100%;max-width:800px}
+                header{text-align:center;margin-bottom:2rem}
+                h1{font-size:2rem}
+                .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+                .panel h2{margin-bottom:8px}
+                .panel p{color:var(--muted);margin-bottom:12px}
+                .actions{display:flex;gap:12px}
+                .btn{padding:10px 14px;background:var(--accent);color:#000;border-radius:8px;text-decoration:none;font-weight:700}
+                .btn:disabled{opacity:0.45;cursor:not-allowed;pointer-events:none}
+                .back{display:block;margin-top:16px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace}
+              </style>
+            </head>
+            <body>
+              <div class="wrap">
+                <header>
+                </header>
+
+                <div class="panel">
+                  <h2></h2>
+                  <p></p>
+                  <div class="actions">
+                    <!-- Schedule form -->
+                    <div style="flex:1">
+                      <!-- Reference / Resume drop-zone: drop PDF or DOCX to auto-extract email -->
+                      <div style="margin-top:8px;margin-bottom:8px">
+                        <div style="margin-bottom:6px;font-size:12px;color:var(--muted)">Reference (drop PDF or DOCX to auto-extract candidate email)</div>
+                        <div id="resumeDropZone" style="border:1px dashed var(--border);border-radius:8px;padding:14px;text-align:center;cursor:pointer;background:var(--surface);color:var(--text);display:flex;flex-direction:column;gap:6px" onclick="document.getElementById('resumeDropInput').click()">
+                          <div id="resumeDzIcon">📄</div>
+                          <div id="resumeDzTitle">Drop PDF or DOCX here</div>
+                          <div id="resumeDzSub" style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace">click to browse · pdf, docx supported</div>
+                        </div>
+                        <input id="resumeDropInput" type="file" accept=".pdf,.docx" style="display:none" />
+                        <div id="resumeDropStatus" style="margin-top:6px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:13px"></div>
+                      </div>
+                      <div style="margin-bottom:8px;display:flex;gap:8px;align-items:center">
+                        <label for="roleSelect" style="font-size:13px;font-weight:600;min-width:48px">Role</label>
+                        <select id="roleSelect" style="padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);width:160px">
+                          <option value="" selected>Loading roles...</option>
+                        </select>
+                      </div>
+                      <div style="margin-bottom:8px;font-weight:600">Invitation</div>
+                      <div style="margin-bottom:8px">
+                        <input id="subjectInput" type="text" placeholder="Subject" autocomplete="off" style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);margin-bottom:8px" />
+                        <textarea id="invitationText" placeholder="Invitation text" rows="4" autocomplete="off" style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);margin-bottom:8px"></textarea>
+                        <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Panels</div>
+                        <div id="panelChoices" style="display:grid;gap:8px;margin-bottom:8px"></div>
+                        <input id="panelsInput" type="hidden" />
+                        <input id="meetLinkInput" type="text" value="https://meet.google.com/mno-jdhc-xid" placeholder="Google Meet link" autocomplete="off" style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);margin-bottom:8px" />
+                        <div style="margin-top:8px;color:var(--muted);font-size:13px">Sender credentials are read from environment variables: <code>SENDER_EMAIL</code>, <code>GOOGLE_CLIENT_ID</code>, <code>GOOGLE_CLIENT_SECRET</code>, <code>GOOGLE_REFRESH_TOKEN</code>.</div>
+                        <!-- Date and time selection (IST) -->
+                        <div style="display:flex;gap:8px;margin-top:8px">
+                          <div style="flex:1">
+                            <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Date</div>
+                            <input id="dateInput" type="text" placeholder="6 june 2026" readonly style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text)" />
+                            <input id="datePicker" type="date" style="display:none" />
+                          </div>
+                          <div style="width:140px">
+                            <div style="font-size:12px;color:var(--muted);margin-bottom:6px">From (IST)</div>
+                            <select id="startTimeInput" style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text)"></select>
+                          </div>
+                          <div style="width:140px">
+                            <div style="font-size:12px;color:var(--muted);margin-bottom:6px">To (IST)</div>
+                            <select id="endTimeInput" style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text)"></select>
+                          </div>
+                        </div>
+                      </div>
+                        <!-- Date/time selection and meeting link removed -->
+
+                        
+                      <div style="display:flex;gap:8px">
+                        <button class="btn" id="sendInviteBtn">Send Calendar Invite</button>
+                      </div>
+                      <div id="statusMsg" style="margin-top:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:13px"></div>
+                      <!-- Attachment area removed per request -->
+                    </div>
+                  </div>
+                </div>
+
+                <a class="back" href="/main">← Back to Main</a>
+              </div>
+              </body>
+              <script>
+              // Simple client-side scheduling helper (IST display)
+              function pad(n){return n<10? '0'+n : n}
+              // populate start/end time dropdowns with IST slots (09:00 - 18:00, 30-min increments)
+              function to12Hour(h,m){
+                const hh = ((h+11)%12)+1; // maps 0->12,13->1
+                const ampm = h<12? 'AM' : 'PM';
+                return pad(hh)+':'+pad(m)+' '+ampm;
+              }
+
+              document.getElementById('sendInviteBtn').addEventListener('click', async function(){
+                const btn = this;
+                if(btn.disabled) return;
+                const subject = document.getElementById('subjectInput').value || 'Interview Invitation';
+                const invitation_text = document.getElementById('invitationText').value || '';
+                const panels = document.getElementById('panelsInput').value; // comma-separated
+                const location = document.getElementById('meetLinkInput').value || '';
+                const dateVal = document.getElementById('dateInput').dataset.iso || document.getElementById('dateInput').value;
+                const startTime = document.getElementById('startTimeInput').value;
+                const endTime = document.getElementById('endTimeInput').value;
+                const msg = document.getElementById('statusMsg');
+                if(!panels){ msg.textContent = 'Provide at least one panelist email (comma-separated)'; return }
+                if(!dateVal || !startTime || !endTime){ msg.textContent = 'Select date, start and end times (IST)'; return }
+                if(startTime >= endTime){
+                  msg.textContent = 'End time must be after start time (e.g. 9:00 AM to 9:30 AM)';
+                  return;
+                }
+                const payload = {
+                  attendees: panels,
+                  subject,
+                  invitation_text,
+                  date: dateVal, // YYYY-MM-DD
+                  start_time: startTime, // HH:MM
+                  end_time: endTime,
+                  location,
+                  meet_link: document.getElementById('meetLinkInput').value || ''
+                };
+                if(uploadedResumePath){
+                  payload.attachments = [uploadedResumePath];
+                }
+                btn.disabled = true;
+                btn.textContent = 'Sending...';
+                try{
+                  const res = await fetch('/send-invite', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+                  const data = await res.json();
+                  if(data.success){ msg.textContent = data.message } else { msg.textContent = 'Error: '+(data.error||'unknown') }
+                }catch(e){ msg.textContent = 'Network error: '+e.message }
+                finally {
+                  btn.disabled = false;
+                  btn.textContent = 'Send Calendar Invite';
+                }
+              });
+
+              // date picker wiring and time slot population
+              function pad(n){ return n<10 ? '0'+n : n }
+              function to12hourLabel(h,m){
+                let hh = h % 12; if(hh===0) hh = 12;
+                return hh+':'+pad(m)+' '+(h<12? 'AM':'PM');
+              }
+
+              function populateTimeSlots(){
+                const startSel = document.getElementById('startTimeInput');
+                const endSel = document.getElementById('endTimeInput');
+                startSel.innerHTML=''; endSel.innerHTML='';
+                // IST working hours e.g., 9:00 to 18:00
+                const startHour = 9, endHour = 18;
+                const slots = [];
+                for(let h=startHour; h<=endHour; h++){
+                  for(const m of [0,30]){
+                    if(h===endHour && m>0) continue;
+                    const value = pad(h)+':'+pad(m);
+                    const label = to12hourLabel(h,m) + ' IST';
+                    slots.push({value,label});
+                  }
+                }
+                for(const s of slots){
+                  const o1=document.createElement('option'); o1.value=s.value; o1.textContent=s.label; startSel.appendChild(o1);
+                  const o2=document.createElement('option'); o2.value=s.value; o2.textContent=s.label; endSel.appendChild(o2);
+                }
+                // Default: 9:00 AM start, 9:30 AM end (Gmail rejects zero-duration events)
+                if(startSel.options.length > 0) startSel.selectedIndex = 0;
+                if(endSel.options.length > 1) endSel.selectedIndex = 1;
+
+                startSel.addEventListener('change', function(){
+                  const startIdx = startSel.selectedIndex;
+                  if(endSel.selectedIndex <= startIdx){
+                    endSel.selectedIndex = Math.min(startIdx + 1, endSel.options.length - 1);
+                  }
+                });
+              }
+
+              // wire the date input to a hidden date picker and format display as '6 june 2026'
+              const dateInput = document.getElementById('dateInput');
+              const datePicker = document.getElementById('datePicker');
+              if(dateInput && datePicker){
+                dateInput.addEventListener('click', ()=> datePicker.showPicker ? datePicker.showPicker() : datePicker.focus());
+                datePicker.addEventListener('change', function(){
+                  const v = this.value; // YYYY-MM-DD
+                  dateInput.dataset.iso = v;
+                  const d = new Date(v);
+                  const day = d.getDate();
+                  const month = d.toLocaleString('en-GB', { month: 'long' }).toLowerCase();
+                  const year = d.getFullYear();
+                  dateInput.value = `${day} ${month} ${year}`; // e.g., 6 june 2026
+                });
+              }
+
+              populateTimeSlots();
+
+                // Reference drop-zone: upload resume/reference to /extract-email. The extracted email
+                // will be held as pending and appended to the panels list for the role the user selects.
+              let uploadedResumePath = null;
+              let uploadedResumeName = null;
+              // persist the extracted email so it can be added to panels whenever the user
+              // selects a role (multiple changes should still add it if not already present)
+              let uploadedExtractedEmail = null;
+              let roleChosen = false; // becomes true when the user changes/selects a role manually
+              const resumeDropZone = document.getElementById('resumeDropZone');
+              const resumeDropInput = document.getElementById('resumeDropInput');
+              const resumeDropStatus = document.getElementById('resumeDropStatus');
+
+              async function handleResumeFile(file){
+                if(!file) return;
+                resumeDropStatus.textContent = 'Uploading & extracting...';
+                const fd = new FormData();
+                fd.append('resume', file);
+                try{
+                  const res = await fetch('/extract-email', { method: 'POST', body: fd });
+                  const data = await res.json();
+                    if(data.success){
+                    uploadedResumePath = data.resume_path || null;
+                    uploadedResumeName = uploadedResumePath ? uploadedResumePath.split(/[/\\]/).pop() : file.name;
+                    resumeDropStatus.textContent = 'Uploaded: ' + uploadedResumeName + (data.email ? (' — extracted: ' + data.email) : '');
+                    // Store extracted email persistently. If the user has already chosen a role,
+                    // append immediately to that role's panels list; otherwise wait until role selection.
+                    if(data.email){
+                      uploadedExtractedEmail = data.email;
+                      if(roleChosen){
+                        const pansEl = document.getElementById('panelsInput');
+                        const existing = (pansEl.value || '').split(',').map(s => s.trim()).filter(Boolean);
+                        if(!existing.includes(uploadedExtractedEmail)){
+                          existing.push(uploadedExtractedEmail);
+                          pansEl.value = existing.join(',');
+                          // refresh status (do not append repeatedly)
+                          resumeDropStatus.textContent = 'Uploaded: ' + uploadedResumeName + ' — extracted: ' + uploadedExtractedEmail + ' — added to panels for selected role';
+                        } else {
+                          resumeDropStatus.textContent = 'Uploaded: ' + uploadedResumeName + ' — extracted: ' + uploadedExtractedEmail + ' — already in panels';
+                        }
+                      } else {
+                        resumeDropStatus.textContent = 'Uploaded: ' + uploadedResumeName + ' — extracted: ' + uploadedExtractedEmail + ' — will be added when you select a role';
+                      }
+                    }
+                  } else {
+                    resumeDropStatus.textContent = 'Error: ' + (data.error||'unknown');
+                  }
+                }catch(err){ resumeDropStatus.textContent = 'Network error: '+err.message }
+              }
+
+              resumeDropZone.addEventListener('dragover', e => { e.preventDefault(); resumeDropZone.style.borderColor = 'var(--accent)'; resumeDropZone.style.background = 'rgba(96,165,250,0.06)'; });
+              resumeDropZone.addEventListener('dragleave', e => { resumeDropZone.style.borderColor = ''; resumeDropZone.style.background = ''; });
+              resumeDropZone.addEventListener('drop', e => { e.preventDefault(); resumeDropZone.style.borderColor = ''; resumeDropZone.style.background = ''; const f = e.dataTransfer.files[0]; if(f) handleResumeFile(f); });
+              resumeDropInput.addEventListener('change', e => { const f = e.target.files && e.target.files[0]; if(f) handleResumeFile(f); });
+
+              // Google Calendar integration removed per request
+
+              // Attachment handling removed from interview page
+              let interviewSettings = {roles: [], panels: []};
+
+              function getManagedInterviewRole(){
+                const selectedId = document.getElementById('roleSelect').value;
+                return interviewSettings.roles.find(role => role.id === selectedId) || null;
+              }
+
+              function updatePanelInput(){
+                const selected = Array.from(document.querySelectorAll('.panel-choice:checked')).map(cb => cb.value);
+                if(uploadedExtractedEmail && !selected.includes(uploadedExtractedEmail)){
+                  selected.push(uploadedExtractedEmail);
+                }
+                document.getElementById('panelsInput').value = selected.join(',');
+              }
+
+              function applyManagedInterviewRole(){
+                const role = getManagedInterviewRole();
+                const subj = document.getElementById('subjectInput');
+                const body = document.getElementById('invitationText');
+                if(role && subj) subj.value = role.invite_subject || '';
+                if(role && body) body.value = role.invite_body || '';
+                try{ roleChosen = !!role; }catch(e){}
+                updatePanelInput();
+              }
+
+              function renderPanelChoices(){
+                const box = document.getElementById('panelChoices');
+                box.innerHTML = '';
+                if(!interviewSettings.panels.length){
+                  box.innerHTML = '<div style="font-size:13px;color:var(--muted)">No panels added. Open Settings to add interview panel members.</div>';
+                  updatePanelInput();
+                  return;
+                }
+                interviewSettings.panels.forEach(panel => {
+                  const label = document.createElement('label');
+                  label.style.cssText = 'display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--border);border-radius:6px;background:var(--surface);font-size:13px';
+                  label.innerHTML = '<input class="panel-choice" type="checkbox" value=""> <span></span>';
+                  const input = label.querySelector('input');
+                  input.value = panel.email;
+                  input.addEventListener('change', updatePanelInput);
+                  label.querySelector('span').textContent = panel.name + ' - ' + panel.email;
+                  box.appendChild(label);
+                });
+                updatePanelInput();
+              }
+
+              async function loadInterviewSettings(){
+                try{
+                  const res = await fetch('/api/settings');
+                  interviewSettings = await res.json();
+                  const roleEl = document.getElementById('roleSelect');
+                  roleEl.innerHTML = '<option value="">Select</option>';
+                  interviewSettings.roles.forEach(role => {
+                    const opt = document.createElement('option');
+                    opt.value = role.id;
+                    opt.textContent = role.name;
+                    roleEl.appendChild(opt);
+                  });
+                  renderPanelChoices();
+                  applyManagedInterviewRole();
+                }catch(e){
+                  console.warn('Could not load interview settings', e);
+                }
+              }
+
+              document.getElementById('roleSelect').addEventListener('change', applyManagedInterviewRole);
+              window.addEventListener('DOMContentLoaded', loadInterviewSettings);
+              </script>
+            </html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0d0d;
+  --surface: #151515;
+  --surface2: #1c1c1c;
+  --border: #2a2a2a;
+  --border-active: #404040;
+  --accent: #e8ff47;
+  --accent-dim: rgba(232,255,71,0.12);
+  --accent-dim2: rgba(232,255,71,0.06);
+  --text: #f0f0f0;
+  --text-muted: #888;
+  --error: #f87171;
+  --error-bg: rgba(248,113,113,0.08);
+  --radius: 6px;
+  --radius-lg: 10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; font-size: 15px; line-height: 1.6; }
+body { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+.logo {
+  height: 36px;
+  padding: 0 14px;
+  background: var(--accent);
+  border-radius: var(--radius);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 11px; color: #000;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  text-align: center;
+  margin-bottom: .35rem;
+}
+.sub {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 2rem;
+}
+
+.error-box {
+  background: var(--error-bg);
+  border: 0.5px solid var(--error);
+  border-radius: var(--radius);
+  padding: .65rem 1rem;
+  font-size: 13px;
+  color: var(--error);
+  margin-bottom: 1.25rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.field { margin-bottom: 1.25rem; }
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: .5rem;
+}
+input[type=email] {
+  width: 100%;
+  background: var(--surface2);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  padding: .7rem 1rem;
+  outline: none;
+  transition: border-color .2s;
+}
+input[type=email]:focus { border-color: var(--accent); }
+input[type=email]::placeholder { color: var(--text-muted); }
+
+.btn {
+  width: 100%;
+  background: var(--accent);
+  color: #000;
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  border: none;
+  border-radius: var(--radius);
+  padding: .8rem;
+  cursor: pointer;
+  transition: opacity .15s;
+  margin-top: .25rem;
+}
+.btn:hover { opacity: .88; }
+.btn:active { opacity: .75; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo-wrap">
+    <div class="logo">PRICEEASY AI</div>
+  </div>
+  <h1>HR Portal</h1>
+  <p class="sub">Sign in to continue</p>
+
+  {% if error %}
+  <div class="error-box">{{ error }}</div>
+  {% endif %}
+
+  <form method="POST" action="/login">
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" name="email" placeholder="you@company.com" autofocus required>
+    </div>
+    <button type="submit" class="btn">Login</button>
+  </form>
+</div>
+</body>
+</html>

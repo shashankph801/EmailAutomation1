@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resume Agent — Main</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0d0d0d;--surface:#151515;--border:#2a2a2a;--accent:#e8ff47;--text:#f0f0f0;--muted:#888;--radius:10px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;display:flex;align-items:center;justify-content:center;padding:2rem}
+    .wrap{width:100%;max-width:900px}
+    header{text-align:center;margin-bottom:2rem}
+    h1{font-size:2rem}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center}
+    .card h2{font-size:1.1rem;margin-bottom:8px}
+    .card p{color:var(--muted);font-size:0.95rem;margin-bottom:16px}
+    .btn{display:inline-block;padding:10px 16px;background:var(--accent);color:#000;border-radius:8px;font-weight:700;text-decoration:none}
+    .back{display:block;margin-top:18px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace}
+    @media(max-width:800px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <a href="/logout" style="position:fixed;top:1rem;right:1rem;z-index:999;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:5px 14px;border-radius:20px;transition:color .15s,border-color .15s" onmouseover="this.style.color='#f87171';this.style.borderColor='rgba(248,113,113,.45)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Logout</a>
+  <div class="wrap">
+    <header>
+      <div class="badge" style="font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:12px;margin-bottom:8px">Resume Agent · Choose an action</div>
+      <h1>Choose what you'd like to do</h1>
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Send JD and Assessment</h2>
+        <p>Upload a resume, attach the Job Description and the assessment, then send the email to the candidate.</p>
+  <a class="btn" href="/app">Open</a>
+      </div>
+
+      <div class="card">
+        <h2>Interview</h2>
+        <p>Start or manage interview-related actions. Click to open the interview page.</p>
+  <a class="btn" href="/interview">Open</a>
+      </div>
+
+      <div class="card">
+        <h2>Settings</h2>
+        <p>Add or delete roles and interview panel members without changing the code.</p>
+  <a class="btn" href="/settings">Open</a>
+      </div>
+    </div>
+
+  
+  </div>
+</body>
+</html>
